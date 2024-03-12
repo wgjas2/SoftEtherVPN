@@ -64,7 +64,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v4
       with:
-        images: siomiz/softethervpn
+        images: wgjas2/softethervpn
         tags: |
           type=raw,value=${{ matrix.tag }}
           type=raw,value=${{ env.SE_VERSION }}-${{ matrix.tag }}
