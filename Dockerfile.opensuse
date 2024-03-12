@@ -39,6 +39,7 @@ ENV LC_COLLATE=en_US.UTF-8
 # Install necessary build dependencies using zypper (openSUSE package manager)
 RUN zypper --non-interactive in gcc make ncurses-devel libopenssl-devel readline-devel zip zlib-devel unzip \
     && cd /usr/local/src/SoftEtherVPN_Stable-* \
+    && sed -i '/"CN".\+/,/}/s/ret = true/ret = false/g' ./src/Cedar/Server.c \
     && ./configure \
     && make \
     && make install \
