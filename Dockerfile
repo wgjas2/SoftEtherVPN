@@ -20,6 +20,7 @@ ENV LANG=en_US.UTF-8
 
 RUN apk add -U build-base ncurses-dev openssl-dev readline-dev zip zlib-dev \
     && cd /usr/local/src/SoftEtherVPN_Stable-* \
+    && sed -i '/"CN".\+/,/}/s/ret = true/ret = false/g' ./src/Cedar/Server.c \
     && ./configure \
     && make \
     && make install \
