@@ -1,0 +1,83 @@
+name: v5 Docker Image CI/CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - '*'
+      - '!README.md'
+  pull_request:
+    paths:
+      - '*'
+      - '!README.md'
+
+env:
+  SE_VERSION: 5.02.5187
+
+jobs:
+
+  build:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tag: [alpine, debian, ubuntu, opensuse]
+    steps:
+    - 
+      name: Checkout
+      uses: actions/checkout@v3
+    - 
+      name: Set up QEMU 
+      uses: docker/setup-qemu-action@v2
+      with:
+        platforms: linux/amd64,linux/arm64,linux/arm/v7
+    - 
+      name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v2
+    - 
+      name: Build Docker image for testing
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        file: Dockerfile.${{ matrix.tag }}
+        load: true
+        tags: vpn
+    - 
+      name: Test IPsec connection
+      run: |
+        docker network create --subnet 172.18.0.0/16 test-ipsec
+        docker run -d --cap-add NET_ADMIN -e USERNAME=test -e PASSWORD=test --network test-ipsec --ip 172.18.0.3 vpn
+        sudo bash tests/prepare-ipsec.sh
+        sudo bash tests/test-ipsec.sh
+    - 
+      name: Login to Docker Hub
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - 
+      name: Set Docker meta
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: wgjas2/softethervpn
+        tags: |
+          type=raw,value=${{ matrix.tag }}
+          type=raw,value=${{ env.SE_VERSION }}-${{ matrix.tag }}
+          type=raw,value=latest,enable=${{ matrix.tag == 'alpine' }}
+          type=raw,value=${{ env.SE_VERSION }},enable=${{ matrix.tag == 'alpine' }}
+    - 
+      name: Buildx and push Docker image
+      uses: docker/build-push-action@v3
+      with:
+        builder: ${{ steps.buildx.outputs.name }}
+        context: .
+        file: Dockerfile.v5.${{ matrix.tag }}
+        platforms: linux/amd64,linux/arm64,linux/arm/v7
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+
