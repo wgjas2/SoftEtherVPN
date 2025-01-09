@@ -42,7 +42,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: .
-        file: Dockerfile.${{ matrix.tag }}
+        file: Dockerfile.v5.${{ matrix.tag }}
         load: true
         tags: vpn
     - 
