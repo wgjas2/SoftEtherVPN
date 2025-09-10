@@ -11,18 +11,18 @@ ENV LC_COLLATE=en_US.UTF-8
 LABEL maintainer="Tomohisa Kusano <siomiz@gmail.com>" \
       contributors="See CONTRIBUTORS file <https://github.com/siomiz/SoftEtherVPN/blob/master/CONTRIBUTORS>"
 
-ENV BUILD_VERSION=5.02.5187 \
-      SHA256_SUM=2add80f1a530389d54026f9a4d11005dc4b77e689ac4c4a0143c31c9121f7015
+ENV BUILD_VERSION=5.2.5188 \
+    SHA256_SUM=ec79a50865049a1113185d2b369274727d04a330922ac2f474de8fbf78a5d0c2
 
 # Install required packages using zypper (openSUSE package manager)
 RUN zypper --non-interactive in wget tar gzip coreutils zip unzip
 
 # Download and extract SoftEtherVPN source code
-RUN wget https://github.com/SoftEtherVPN/SoftEtherVPN/archive/v${BUILD_VERSION}.tar.gz \
+RUN wget https://github.com/SoftEtherVPN/SoftEtherVPN/archive/${BUILD_VERSION}.tar.gz \
     && echo "${SHA256_SUM}  v${BUILD_VERSION}.tar.gz" | sha256sum -c \
     && mkdir -p /usr/local/src \
-    && tar -xzf v${BUILD_VERSION}.tar.gz -C /usr/local/src/ \
-    && rm v${BUILD_VERSION}.tar.gz
+    && tar -xzf ${BUILD_VERSION}.tar.gz -C /usr/local/src/ \
+    && rm ${BUILD_VERSION}.tar.gz
 
 # Continue with the second stage using openSUSE as the base image (build)
 FROM opensuse/tumbleweed:latest as build

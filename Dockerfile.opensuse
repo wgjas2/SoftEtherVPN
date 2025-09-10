@@ -11,8 +11,8 @@ ENV LC_COLLATE=en_US.UTF-8
 LABEL maintainer="Tomohisa Kusano <siomiz@gmail.com>" \
       contributors="See CONTRIBUTORS file <https://github.com/siomiz/SoftEtherVPN/blob/master/CONTRIBUTORS>"
 
-ENV BUILD_VERSION=4.43-9799-beta \
-    SHA256_SUM=9153a95574f2afd8259ff729e6da3a9898211b69d7d391419270935c8482888c
+ENV BUILD_VERSION=4.44-9807-rtm \
+    SHA256_SUM=8ccd8959a674bd4b34f9fc5dd9eb60fe0226b0adc0f6f852a07011dcc769ed97
 
 # Install required packages using zypper (openSUSE package manager)
 RUN zypper --non-interactive in wget tar gzip coreutils zip unzip
