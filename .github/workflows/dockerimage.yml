@@ -14,8 +14,8 @@ on:
       - '!README.md'
 
 env:
-  SE_VERSION: 4.43
-  SE_REVISION: 9799
+  SE_VERSION: 4.44
+  SE_REVISION: 9807
 
 jobs:
 
