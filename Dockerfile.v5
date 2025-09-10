@@ -1,10 +1,10 @@
-FROM alpine:3.16 as prep
+FROM alpine:3.22 as prep
 
 LABEL maintainer="Tomohisa Kusano <siomiz@gmail.com>" \
       contributors="See CONTRIBUTORS file <https://github.com/siomiz/SoftEtherVPN/blob/master/CONTRIBUTORS>"
 
-ENV BUILD_VERSION=5.02.5187 \
-    SHA256_SUM=2add80f1a530389d54026f9a4d11005dc4b77e689ac4c4a0143c31c9121f7015
+ENV BUILD_VERSION=5.2.5188 \
+    SHA256_SUM=6ED79A017F8320DF26FDF50998C5030316F6A23A92A55CB1C411D07CF666B317
 
 RUN wget https://github.com/SoftEtherVPN/SoftEtherVPN/archive/v${BUILD_VERSION}.tar.gz \
     && echo "${SHA256_SUM}  v${BUILD_VERSION}.tar.gz" | sha256sum -c \
@@ -12,7 +12,7 @@ RUN wget https://github.com/SoftEtherVPN/SoftEtherVPN/archive/v${BUILD_VERSION}.
     && tar -x -C /usr/local/src/ -f v${BUILD_VERSION}.tar.gz \
     && rm v${BUILD_VERSION}.tar.gz
 
-FROM alpine:3.16 as build
+FROM alpine:3.22 as build
 
 COPY --from=prep /usr/local/src /usr/local/src
 
@@ -27,7 +27,7 @@ RUN apk add -U build-base ncurses-dev openssl-dev readline-dev zip zlib-dev \
     && touch /usr/vpnserver/vpn_server.config \
     && zip -r9 /artifacts.zip /usr/vpn* /usr/bin/vpn*
 
-FROM alpine:3.16
+FROM alpine:3.22
 
 COPY --from=build /artifacts.zip /
 
