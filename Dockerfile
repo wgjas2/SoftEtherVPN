@@ -4,7 +4,7 @@ LABEL maintainer="Tomohisa Kusano <siomiz@gmail.com>" \
       contributors="See CONTRIBUTORS file <https://github.com/siomiz/SoftEtherVPN/blob/master/CONTRIBUTORS>"
 
 ENV BUILD_VERSION=4.44-9807-rtm \
-    SHA256_SUM=50108920dd0f0bda80f726d2cbe87ea38d334c0f62a5779d5bad8f5edf9896e6
+    SHA256_SUM=8ccd8959a674bd4b34f9fc5dd9eb60fe0226b0adc0f6f852a07011dcc769ed97
 
 RUN wget https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/archive/v${BUILD_VERSION}.tar.gz \
     && echo "${SHA256_SUM}  v${BUILD_VERSION}.tar.gz" | sha256sum -c \
