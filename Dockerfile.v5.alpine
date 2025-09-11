@@ -6,6 +6,8 @@ LABEL maintainer="Tomohisa Kusano <siomiz@gmail.com>" \
 ENV BUILD_VERSION=5.2.5188 \
     GIT_VERIFY_PUBKEY=B5690EEEBB952194
 
+WORKDIR /usr/local/src/SoftEtherVPN
+
 # RUN wget https://github.com/SoftEtherVPN/SoftEtherVPN/archive/${BUILD_VERSION}.tar.gz \
 #     && echo "${SHA256_SUM}  ${BUILD_VERSION}.tar.gz" | sha256sum -c \
 #     && mkdir -p /usr/local/src \
