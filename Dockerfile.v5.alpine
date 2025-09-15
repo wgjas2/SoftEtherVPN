@@ -45,7 +45,7 @@ FROM alpine:3.22
 
 COPY --from=build /artifacts.zip /
 
-COPY copyables /
+COPY copyables/v5 /
 
 ENV LANG=en_US.UTF-8
 
